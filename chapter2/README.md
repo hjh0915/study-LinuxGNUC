@@ -7,3 +7,52 @@ hexdump
 =====
 >>> gcc -E 文件名.c
 用gcc -E 命令完成预处理的操作并查看输出
+
+编译
+====
+>>> gcc -S 文件名.c
+>>> cat 文件名.s
+gcc采用的是AT&T的汇编格式，操作数在最后
+
+objdump
+=======
+先编译成.o文件
+>>> gcc -c 文件名.c
+用objdump -d查看经反汇编得到的代码，第一行指出hello.o目标文件格式 elf64-x86-64。
+汇编部分是人可读的x86-64汇编程序。
+
+创建静态库
+=========
+用ar工具生成libvector.a静态库
+---------------------------
+>>> gcc -Og -c 文件名.c
+>>> gcc 文件名.o libvector.a -o 文件名
+>>> file 文件名
+
+动态库
+=====
+>>> gcc -shared -fPIC -o libvector.so 文件名.c
+将源代码编译成动态库libvector.so，用file查看可以确定它是共享库，其中-fPIC就是指明生成位置无关代码，-shared指出要生成动态库
+
+生成引用动态库
+------------
+>>> gcc -o macro-shared 文件名.c libvector.so
+
+用ldd查看动态库引用情况
+--------------------
+>>> ldd macro-shared
+ldd可以查看可执行文件引用了哪些动态库
+
+gcc搜索路径
+==========
+>>> gcc -print-search-dirs
+
+ldconfig
+========
+>>> cat /etc/ld.so.conf
+>>> ldconfig -p |grep vector
+
+GDB调试
+=======
+>>> gdb demo-gdb
+用gdb启用被调试对象
