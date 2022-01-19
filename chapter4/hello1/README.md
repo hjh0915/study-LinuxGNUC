@@ -24,3 +24,23 @@
 从节表头获得全部节的信息
 ====================
 >>> readelf -S main-lib
+
+可执行头文件
+==========
+>>> readelf -h build/main-lib
+
+可执行文件的段
+============
+>>> readelf -l build/main-lib
+
+节名字符串表
+==========
+>>> readelf -x 27 build/main-lib
+
+查看符号表
+=========
+>>> nm -s build/main-lib.o
+
+机器码和反汇编
+============
+>>> objdump -d build/addvec.o
