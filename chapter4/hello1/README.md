@@ -1,5 +1,9 @@
 编译、链接生成可执行文件
 ====================
+生成.s汇编程序
+------------
+>>> gcc -Og -S main-lib2.c
+
 编译目标文件
 ----------
 >>> gcc -Og -c addvec.c multvec.c
@@ -44,3 +48,23 @@
 机器码和反汇编
 ============
 >>> objdump -d build/addvec.o
+
+生成动态链接
+==========
+>>> gcc -fPIC -shared main-lib2.c -o build/libvector2.so
+
+查看ELF文件头信息
+===============
+>>> readelf -h build/libvector2.so
+
+动态重定位表
+==========
+>>> objdump -R build/libvector2.so
+
+查看libvector2.so中的GOT内容
+==========================
+>>> hexdump -s 0x fc8-n 0x30 build/libvector2.so
+
+查看动态链接符号
+=============
+>>> objdump -T build/libvector2.so
